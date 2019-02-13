@@ -21,8 +21,9 @@ void selectionsort(int x[], int n){
 
 int main(){
     int arr[] = {43,65,4,23,6,98,2,65,7,79};
-    selectionsort(arr, sizeof(arr)/ sizeof(arr[0]));
-    for(int i = 0; i < sizeof(arr)/ sizeof(arr[0]); i++){
+    int n = sizeof(arr)/sizeof(arr[0]);
+    selectionsort(arr, n);
+    for(int i = 0; i < n; i++){
         cout << arr[i] << " ";
     }
 }

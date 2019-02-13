@@ -1,3 +1,8 @@
+/*
+	 Author: Yuqing Luo
+
+	 HW3b QuickSort
+*/
 #include <iostream>
 #include <fstream>
 #include <random>
@@ -5,42 +10,7 @@
 
 using namespace std;
 
-const double phi = (sqrt(5)-1)/2;
-void quicksort(int x[], int left, int right, int GD_k);
-double GoldenMeanSearch(double L, double R, double eps, int arr[], int n);
-double getTime(int x[], int n, double GD_k);
-
-double getTime(int x[], int n, double GD_k){
-    int y[n];
-    memcpy(y, x, n* sizeof(int));
-    clock_t startTime, endTime;
-    startTime = clock();
-    quicksort(y, 0, n-1, int(GD_k));
-    endTime = clock();
-    double time = (double)(endTime - startTime) / CLOCKS_PER_SEC;
-    return time;
-}
-
-double GoldenMeanSearch(double L, double R, double eps, int arr[], int n){
-    double x, y;
-    x = L + (R-L) * (1-phi);
-    y = R - (R-L) * (1-phi);
-    while(fabs(R-L) > eps){
-        double tx = getTime(arr, n, x);
-        double ty = getTime(arr, n, y);
-        if (tx > ty){
-            L = x;
-            x = y;
-            y = R - (R-L) * (1-phi);
-        }
-        else{
-            R = y;
-            y = x;
-            x = L + (R-L) * (1-phi);
-        }
-    }
-    return L;
-}
+void GoldenmeanSearch();
 
 void quicksort(int x[], int left, int right, int GD_k) {
     if((right - left) <= 0)
@@ -60,7 +30,10 @@ void quicksort(int x[], int left, int right, int GD_k) {
     }
 
     else{
+//        srand(time(NULL));
+//        int index = rand() % (right-left+1) + left;
         int pivot = x[left];
+//        swap(x[index],x[left]);
         int i = left, j = right;
 
         while(j > i){
@@ -92,7 +65,26 @@ int main(){
     while(!f.eof()){
         f >> arr[i++];
     }
-    int k = int(GoldenMeanSearch(1, 200, 0.5, arr, n));
-    cout << k;
 
+//    GoldenmeanSearch();
+
+    int GD_k = 10;
+    int arr_1[n] = {0};
+
+    for(int i = 0; i < 10; i++){
+        for(int j = 0; j < n; j++){
+            arr_1[j] = arr[j];
+        }
+        clock_t startTime, endTime;
+        startTime = clock();
+        quicksort(arr_1, 0, n-1, GD_k);
+        endTime = clock();
+        double time = (double)(endTime - startTime) / CLOCKS_PER_SEC;
+//      for(int q = 0; q < n; q++){
+//           cout << arr[q] << " ";
+//      }
+//       cout << endl;
+        cout << time << "s" <<endl;
+    }
 }
+
