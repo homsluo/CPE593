@@ -1,3 +1,8 @@
+/*
+	 Author: Yuqing Luo
+
+	 HW3b QuickSort
+*/
 #include <iostream>
 #include <fstream>
 #include <random>
@@ -5,78 +10,27 @@
 
 using namespace std;
 
-const double phi = (sqrt(5)-1)/2;
-void quicksort(int x[], int left, int right, int GD_k);
-double GoldenMeanSearch(double L, double R, double eps, int arr[], int n);
-double getTime(int x[], int n, double GD_k);
-
-double getTime(int x[], int n, double GD_k){
-    int y[n];
-    memcpy(y, x, n* sizeof(int));
-    clock_t startTime, endTime;
-    startTime = clock();
-    quicksort(y, 0, n-1, int(GD_k));
-    endTime = clock();
-    double time = (double)(endTime - startTime) / CLOCKS_PER_SEC;
-    return time;
-}
-
-double GoldenMeanSearch(double L, double R, double eps, int arr[], int n){
-    double x, y;
-    x = L + (R-L) * (1-phi);
-    y = R - (R-L) * (1-phi);
-    while(fabs(R-L) > eps){
-        double tx = getTime(arr, n, x);
-        double ty = getTime(arr, n, y);
-        if (tx > ty){
-            L = x;
-            x = y;
-            y = R - (R-L) * (1-phi);
-        }
-        else{
-            R = y;
-            y = x;
-            x = L + (R-L) * (1-phi);
-        }
-    }
-    return L;
-}
-
-void quicksort(int x[], int left, int right, int GD_k) {
+void quicksort(int x[], int left, int right) {
     if((right - left) <= 0)
         return;
+    srand(time(NULL));
+    int index = rand() % (right-left+1) + left;
+    int pivot = x[index];
+    swap(x[index],x[left]);
+    int i = left, j = right;
 
-    int k = right - left + 1;
-
-    if (k <= GD_k){
-        for(int i = left; i < right; i++){
-            for(int j = i; j >= 0; j--){
-                while(x[j] > x[j+1]){
-                    swap(x[j], x[j+1]);
-                }
-            }
-        }
-
+    while(j > i){
+        while(x[j] >= pivot && j > i)
+            j--;
+        while(x[i] <= pivot && j > i)
+            i++;
+        if(j > i)
+            swap(x[i], x[j]);
     }
 
-    else{
-        int pivot = x[left];
-        int i = left, j = right;
-
-        while(j > i){
-            while(x[j] >= pivot && j > i)
-                j--;
-            while(x[i] <= pivot && j > i)
-                i++;
-            if(j > i)
-                swap(x[i], x[j]);
-        }
-
-        swap(x[left], x[i]);
-        quicksort(x, left, i-1, GD_k);
-        quicksort(x, i+1, right, GD_k);
-    }
-
+    swap(x[left], x[i]);
+    quicksort(x, left, i-1);
+    quicksort(x, i+1, right);
 }
 
 int main(){
@@ -92,7 +46,9 @@ int main(){
     while(!f.eof()){
         f >> arr[i++];
     }
-    int k = int(GoldenMeanSearch(1, 200, 0.5, arr, n));
-    cout << k;
 
+    quicksort(arr, 0, n-1);
+    for(int q = 0; q < n; q++){
+        cout << arr[q] << " ";
+    }
 }

@@ -1,16 +1,21 @@
-//
-// Created by LYQ on 2019/2/12.
-//
 #include <iostream>
-#include <cmath>
 
 using namespace std;
 
+class A{
+private:
+    int x;
+public:
+    A(int x):x(x){cout << "a";}
+    A(): x(3) {cout << "b" << x;}
+    ~A() {cout << "c\n";}
+    void f() const {cout << "d";}
+};
+void f(){
+    A a1;
+    a1.f();
+}
 int main(){
-    int a[] = {1,2,3,4,5,6};
-    int b[6];
-    memcpy(b, a, 6*sizeof(int));
-    for(int i = 0; i < 6; i++){
-        cout << b[i] << ", ";
-    }
+    f();
+    A a2(5);
 }
