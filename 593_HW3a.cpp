@@ -9,12 +9,14 @@
 using namespace std;
 
 void InsertionSort(int x[], int n){
-    for(int i = 0; i < n-1; i++){
-        for(int j = i; j >= 0; j--){
-            while(x[j] > x[j+1]){
-                swap(x[j], x[j+1]);
-            }
+    for(int i = 1; i < n; i++){
+        int temp = x[i];
+        int j = i-1;
+        while(j >= 0 && x[j] > temp){
+            x[j+1] = x[j];
+            j--;
         }
+        x[j+1] = temp;
     }
 }
 

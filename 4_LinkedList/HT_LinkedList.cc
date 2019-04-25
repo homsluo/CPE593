@@ -95,6 +95,7 @@ public:
             Node* p = head;
             Node* q = p->next;
             for(; q->next != nullptr; p = q, q = q->next);
+            tail = p;
             p->next = nullptr;
             T r = q->val;
             delete q;
